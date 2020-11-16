@@ -10,5 +10,4 @@ public interface ILife {
 
     // Methoden zum Fortschreiben der Generationen
     public ILife nextGeneration();
-
 }
