@@ -16,7 +16,6 @@ public class Life implements ILife {
 
 
   public Life() {
-    nukeAll();
   }
 
   public Life(String[] setup) {
@@ -30,10 +29,9 @@ public class Life implements ILife {
 
   @Override
   public void nukeAll() {
-    // TODO Auto-generated method stub
     for (int y = 0; y < 5; y++)
       for (int x = 0; x < 5; x++)
-      setDead(Alive[x][y]); 
+      setDead(x,y);
   }
 
   @Override
@@ -63,8 +61,6 @@ public class Life implements ILife {
     // Fall 3: Eine Zelle überlebt wenn 2 oder 3 Nachbarn vorhanden sind
     // Fall 4: Eine Zelle stirbt wenn mehr als 3 Nachbarn vorhanden sind
 
-    // TODO Auto-generated method stub
-
     calculateNeighbors();
 
     for (int y = 0; y < 5; y++)
@@ -74,13 +70,9 @@ public class Life implements ILife {
         if (isAlive(x,y))
         {
           //check is still alive
-            // Checke Fall 2 und 4
+            // Checke Fall 2, 3 und 4
             if(currentneighbors < 2 || currentneighbors > 3){
               setDead(x, y);
-            }
-            // Checke Fall 3
-            if(currentneighbors == 2 || currentneighbors == 3){
-              setAlive(x, y);
             }
         //check if now alive
         // Checke Fall 1
@@ -91,7 +83,9 @@ public class Life implements ILife {
     return nGen;
   }
 
- 
+ public int getNeighbors(int x, int y){
+   return(Neighbors[x][y]);
+ }
 
   public void calculateNeighbors(){
     // Berechnen der Nachbarn für jede einzelne Zelle
@@ -102,12 +96,13 @@ public class Life implements ILife {
         for (int i = 0; i<3; i++)
           for (int j = 0; j<3; j++)
             if (x+i-1 >= 0 && x+i-1 <= 4 && y+j-1 >= 0 && y+j-1 <= 4)
-              if(isAlive(x+i-1, y+j-1))
-                neighbors++;
-                Neighbors[x][y] = neighbors;
-      }
+                if(isAlive(x+i-1, y+j-1))
+                  neighbors++;
+                  if (isAlive(x,y))
+                    Neighbors[x][y] = neighbors-1;
+                  else
+                    Neighbors[x][y] = neighbors;
+        }
   }
 
 }
-
-// -cp .:./jars/junit-4.12.jar:./jars/hamcrest-core-1.3.jar org.junit.runner.JUnitCore
